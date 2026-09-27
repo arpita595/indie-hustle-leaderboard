@@ -2,17 +2,20 @@ const { test } = require('node:test');
 const assert = require('node:assert/strict');
 const app = require('../app');
 
-// 1. Test Health Check Endpoint
+// 1. Test Health Check Endpoint (Intentional Failure Demo)
 test('1. GET /health returns HTTP 200 and status ok', async () => {
   const server = app.listen(0);
   const port = server.address().port;
 
-  const res = await fetch(`http://127.0.0.1:${port}/health`);
-  const data = await res.json();
+  try {
+    const res = await fetch(`http://127.0.0.1:${port}/health`);
+    const data = await res.json();
 
-  assert.strictEqual(res.status, 200);
-  assert.strictEqual(data.status, 'ok');
-  server.close();
+    assert.strictEqual(res.status, 200);
+    assert.strictEqual(data.status, 'broken'); // Intentionally broken
+  } finally {
+    server.close(); // Always runs, even if assertion fails!
+  }
 });
 
 // 2. Test Valid POST Request
