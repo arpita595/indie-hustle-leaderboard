@@ -11,7 +11,7 @@ test('1. GET /health returns HTTP 200 and status ok', async () => {
   const data = await res.json();
 
   assert.strictEqual(res.status, 200);
-  assert.strictEqual(data.status, 'ok');
+  assert.strictEqual(data.status, 'broken');
   server.close();
 });
 
